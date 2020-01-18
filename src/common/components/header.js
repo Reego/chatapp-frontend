@@ -14,8 +14,9 @@ const Navigation = () => (
 
 export default ({ title }) => (
     <React.Fragment>
-        <div className={style.header}>
-            <div className={style.headerTitleWrap}>{title}</div>
+	<div className={style.header}>
+            <div className={style.headerHamburger}><div></div></div>
+	    <div className={style.headerTitleWrap}>{title}</div>
             <div className={style.headerNavigationWrap}>
                 <Navigation/>
             </div>

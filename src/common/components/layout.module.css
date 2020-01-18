@@ -1,0 +1,35 @@
+.layout {
+	display:grid;
+	grid-template-rows:100px 1fr;
+	height:400px;
+}
+
+.layout > * {
+	display:block;
+	width:100%;
+}
+
+.layout > *:first-child {
+	
+}
+
+.layout > *:last-child {
+
+}
+
+@media only screen and (min-width: 500px) {
+	.layout {
+		grid-template-rows:100px 1fr;
+	}
+}
+
+@media only screen and (min-height: 400px) {
+	
+	body {
+		overflow:hidden;
+	}
+
+	.layout {
+		height:100vh;
+	}
+}
