@@ -1,19 +1,10 @@
 import React from 'react';
-import {
-    Switch,
-    Route
-} from 'react-router-dom';
+import style from './style.module.css';
 
 export default () => (
-    <Switch>
-        <Route path='/login'>
-            <p>Login</p>
-        </Route>
-        <Route path='/logout'>
-            <p>Logout</p>
-        </Route>
-        <Route>
-            <p>404: Page Not Found</p>
-        </Route>
-    </Switch>
+    <div className={style.bg}>
+        <div className={style.mainCard}>
+            <h1>Log In</h1>
+        </div>
+    </div>
 )

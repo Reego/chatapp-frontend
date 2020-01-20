@@ -5,20 +5,36 @@ import {
     Route
 } from 'react-router-dom';
 
-import Layout from './components/layout';
 import Home from '../home/index';
+import App from '../app/index';
+import User from '../user/index';
+import Login from '../auth/index';
 
 export default () => (
     <Router>
-        <Layout>
-            <Switch>
-                <Route path='/'>
-                    <Home/>
-                </Route>
-                <Route>
-                    <h1>404: Page Not Found</h1>
-                </Route>
-            </Switch>
-        </Layout>
+        <Switch>
+            <Route path='/app'>
+                <Switch>
+                    <Route path='/'>
+                        <App/>
+                    </Route>
+                </Switch>
+            </Route>
+            <Route path='/user'>
+                <User/>
+            </Route>
+            <Route path='/signup'>
+
+            </Route>
+            <Route path='/logout'>
+
+            </Route>
+            <Route path='/verify'>
+
+            </Route>
+            <Route path={['/login', '/']}>
+                <Login/>
+            </Route>
+        </Switch>
     </Router>
 )
