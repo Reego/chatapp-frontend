@@ -1,5 +1,5 @@
-const action = () => ({type:null})
+import * from '../app/actions' as appActions;
 
 export {
-    action
+    ...appActions
 }
