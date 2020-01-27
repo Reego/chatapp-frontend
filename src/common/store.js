@@ -1,30 +1,22 @@
 import { createStore } from 'redux';
 import reducer from './reducers';
 
-const initialState = {
-    user: {
-        username,
-    },
-    cache: [
-        chatId : {
-            messages: [
-                {
+// const initialState = {
+//     chat: {
+//         groups: {
+//             groupId: {
+//                 groupId,
+//                 groupName,
+//                 messages: []
+//             }
+//         }
+//     }
+//     user: {
+//         username,
+//     },
+// }
 
-                },
-                {
-
-                }
-            ],
-        }
-    ],
-    chats: [
-        {
-            'chatId',
-            'chatName',
-            'users'
-        }
-    ]
-}
+const initialState = {}
 
 // cache has a maximum of 10 chats
 

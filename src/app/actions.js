@@ -1,23 +1,24 @@
 import {
-    RECEIVE_MESSAGE,
-    SEND_MESSAGE,
+    RECEIVE_USER_EVENT,
+    RECEIVE_CHAT_EVENT,
 } from './actionTypes';
 
-function receiveMessage(message, senderUsername) {
+function receiveUserEvent(payload) {
     return {
-        type: RECEIVE_MESSAGE,
-        message,
-        messageIndex,
-        senderUsername,
+        type: RECEIVE_USER_EVENT,
+        payload
     }
 }
 
-function sendMessage(message) {
-    type: SEND_MESSAGE,
-    message
+function receiveChatEvent(payload) {
+    return {
+        type: RECEIVE_CHAT_EVENT,
+        payload
+    }
 }
 
+
 export {
-    receiveMessage,
-    sendMessage,
+    receiveUserEvent,
+    receiveChatEvent,
 }

@@ -1,0 +1,10 @@
+{
+    "body": {
+        "type": "user",
+        "payload": {
+            "type": "create_group_command",
+            "group_id": "167",
+            "group_name": "New Group"
+        }
+    }
+}
