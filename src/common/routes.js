@@ -8,7 +8,9 @@ import {
 import Home from '../home/index';
 import App from '../app/index';
 import User from '../user/index';
-import Login from '../auth/index';
+import Login from '../auth/login';
+import Logout from '../auth/logout';
+import Signup from '../auth/signup';
 
 export default () => (
     <Router>
@@ -24,13 +26,10 @@ export default () => (
                 <User/>
             </Route>
             <Route path='/signup'>
-
+		<Signup>
             </Route>
             <Route path='/logout'>
-
-            </Route>
-            <Route path='/verify'>
-
+		<Logout/>
             </Route>
             <Route path={['/login', '/']}>
                 <Login/>
