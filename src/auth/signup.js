@@ -17,7 +17,7 @@ export default () => {
 	];
 	return (
 	<AuthLayout>
-		<p>Signup</p>
+		<h1>Signup</h1>
 		<AuthForm apiEndpoint='register' submitLabel='Signup' fields={fields}/>
 	</AuthLayout>
 	)

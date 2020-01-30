@@ -7,11 +7,11 @@ import createStore from './common/store';
 const store = createStore();
 
 function App() {
-  return (
-    <Provider store={store}>
-      <Routes/>
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <Routes/>
+        </Provider>
+    );
 }
 
 export default App;

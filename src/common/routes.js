@@ -5,9 +5,7 @@ import {
     Route
 } from 'react-router-dom';
 
-import Home from '../home/index';
 import App from '../app/index';
-import User from '../user/index';
 import Login from '../auth/login';
 import Logout from '../auth/logout';
 import Signup from '../auth/signup';
@@ -22,18 +20,15 @@ export default () => (
                     </Route>
                 </Switch>
             </Route>
-            <Route path='/user'>
-                <User/>
-            </Route>
             <Route path='/signup'>
-		<Signup>
+                <Signup/>
             </Route>
             <Route path='/logout'>
-		<Logout/>
+                <Logout/>
             </Route>
-            <Route path={['/login', '/']}>
+            <Route>
                 <Login/>
             </Route>
         </Switch>
     </Router>
-)
+);

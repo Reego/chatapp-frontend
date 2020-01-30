@@ -82,9 +82,18 @@ const Input = () => (
     </div>
 )
 
-export default () => (
-    <AppLayout>
-        <Sidebar/>
-        <Main/>
-    </AppLayout>
-)
+class App extends React.Component {
+
+    render() {
+        return (<AppLayout>
+            <Sidebar/>
+            <Main/>
+        </AppLayout>)
+    }
+
+    componentDidMount() {
+        // create web socket connection
+    }
+}
+
+export default App;

@@ -3,3 +3,5 @@
 // export {
 //     ...appActions
 // }
+
+const RECEIVED_LOGIN = 'RECEIVED_LOGIN';

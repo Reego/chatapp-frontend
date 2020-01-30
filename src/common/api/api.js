@@ -108,6 +108,8 @@ function safeApiCall(errAction = null) {
     }
 }
 
+const login = safeApiCall()()
+
 export {
     fetchResource,
     safeApiCall

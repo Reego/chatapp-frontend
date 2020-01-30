@@ -55,9 +55,9 @@ function chatEvent(groups = {}, payload) {
     const groupId = payload['group_id'];
 
     if(groups.contains(groupId)) {
-        group = groups[groupId];
+        const group = groups[groupId];
         group.messages.append(
-            Object.assign({}, payload['message']);
+            Object.assign({}, payload['message'])
         );
     }
     else {
