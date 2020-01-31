@@ -1,16 +1,13 @@
 import {
     LOGIN_RECEIVED,
     LOGOUT_RECEIVED
-} from './actionTypes';
+} from '../common/actionTypes';
 
 function receiveLogin(state={}, action) {
     if(action.type === LOGIN_RECEIVED) {
-        state['username'] = action['username'];
-        state['loggedIn'] = true;
         return {
             ...state,
             username: action['username'],
-            loggedIn: true,
         };
     }
     return state;
@@ -21,7 +18,6 @@ function receiveLogout(state={}, action) {
         return {
             ...state,
             username: '',
-            loggedIn: false,
         };
     }
     return state;

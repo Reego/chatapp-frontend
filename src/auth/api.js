@@ -1,7 +1,8 @@
-import getCookie from './cookie';
-import getCsrf from './csrf';
+import getCookie from '../common/api/cookie';
+import getCsrf from '../common/api/csrf';
 
-import { receiveCsrfToken } from '../ducks/actions';
+import { receiveCsrfToken } from '../common/actions';
+import { loginReceived, logoutReceived } from './actions';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
@@ -48,8 +49,7 @@ const fetchResource = function (path, userOptions = {}) {
 
           // HTTP unauthorized
             if (response.status === 401) {
-            // Handle unauthorized requests
-            // Maybe redirect to login page?
+                throw response.json();
             }
 
           // Check for error HTTP error codes
@@ -73,16 +73,16 @@ const fetchResource = function (path, userOptions = {}) {
           // Request succeeded
             return parsedResponse;
         })
-        .catch(error => {
-              // Throw custom API error
-              // If response exists it means HTTP error occured
-            if (response) {
-                throw new ApiError(`Request failed with status ${ response.status }.`, error, response.status);
-            }
-            else {
-                throw new ApiError(error.toString(), null, 'REQUEST_FAILED');
-            }
-        });
+        // .catch(error => {
+        //       // Throw custom API error
+        //       // If response exists it means HTTP error occured
+        //     if (response) {
+        //         throw new ApiError(`Request failed with status ${ response.status }.`, error, response.status);
+        //     }
+        //     else {
+        //         throw new ApiError(error.toString(), null, 'REQUEST_FAILED');
+        //     }
+        // });
 };
 
 function safeApiCall(errAction = null) {
@@ -113,4 +113,52 @@ const login = safeApiCall()()
 export {
     fetchResource,
     safeApiCall
+}
+
+// const loginUrl = window.BASE_URL;
+
+const LOGIN_PATH = '/auth/login';
+const LOGOUT_PATH = '/auth/logout';
+const SIGNUP_PATH = '/auth/signup';
+
+function tryFormLogin(credentials) {
+    if(credentials.username && credentials.password) {
+        return fetchResource(LOGIN_PATH, {
+            credentials: 'include',
+            method: 'POST',
+            body: {
+                username: credentials.username,
+                password: credentials.password,
+            }
+        });
+    }
+    else {
+        throw new Exception("Credentials not provided");
+    }
+}
+
+function tryPingLogin() { // this address should return username in back-end
+    return fetchResource(LOGIN_PATH, {
+        credentials: 'include',
+        method: 'POST',
+    });
+}
+
+function logout() {
+    return fetchResource(LOGOUT_PATH, {
+        credentials: 'include',
+        method: 'POST',
+    });
+}
+
+function tryFormSignup() {
+    return fetchResource(SIGNUP_PATH, {
+        credentials: 'include',
+        method: 'POST',
+    });
+}
+
+export {
+    tryLogin,
+    logout
 }

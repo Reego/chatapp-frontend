@@ -1,5 +1,7 @@
-import React from 'react'
-import style from './style.module.css'
+import React from 'react';
+import { connect } from 'react-redux';
+
+import style from './style.module.css';
 
 import AppLayout from '../common/components/appLayout';
 import AppHeader from '../common/components/appHeader';
@@ -13,7 +15,7 @@ const Sidebar = () => (
             <Group groupName='Group 3'/>
         </div>
     </div>
-)
+);
 
 const Group = ({ groupName, notification }) => (
     <div className={style.group}>
@@ -22,7 +24,7 @@ const Group = ({ groupName, notification }) => (
         </span>
         <div className={style.notification}></div>
     </div>
-)
+);
 
 const Main = () => (
     <div className={style.main}>
@@ -30,7 +32,7 @@ const Main = () => (
         <Chat/>
         <Input/>
     </div>
-)
+);
 
 const Chat = () => (
     <div className={style.chat}>
@@ -55,13 +57,13 @@ const Chat = () => (
             <Message content={'Wow'} self={false}/>
         </div>
     </div>
-)
+);
 
 const Sender = ({ sender }) => (
     <div className={style.messageSender}>
         {sender}
     </div>
-)
+);
 
 const Message = ({ content, self }) => {
     const messageClass = (self) ? style.self : style.other;
@@ -70,30 +72,34 @@ const Message = ({ content, self }) => {
         <div className={style.message + ' ' + messageClass}>
             <span><p>{content}</p></span>
         </div>
-    )
-}
+    );
+};
 
 const LogMessage = ({ content }) => (
     <div className={style.logMessage}>{content}</div>
-)
+);
 
 const Input = () => (
     <div className={style.input}>
     </div>
-)
+);
 
 class App extends React.Component {
 
     render() {
-        return (<AppLayout>
-            <Sidebar/>
-            <Main/>
-        </AppLayout>)
+        return (
+            <AppLayout>
+                <Sidebar/>
+                <Main/>
+            </AppLayout>
+        );
     }
 
     componentDidMount() {
         // create web socket connection
     }
-}
+};
 
-export default App;
+export default connect(
+    ({ chat }) => { chat }
+)(App);

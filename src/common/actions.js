@@ -1,7 +1,11 @@
-// import * from '../app/actions' as appActions;
+import { RECEIVE_CSRF_TOKEN } from './actionTypes';
 
-// export {
-//     ...appActions
-// }
+function receiveCsrfToken(token) {
+    return {
+        type: RECEIVE_CSRF_TOKEN
+    }
+}
 
-const RECEIVED_LOGIN = 'RECEIVED_LOGIN';
+export {
+    receiveCsrfToken
+};
