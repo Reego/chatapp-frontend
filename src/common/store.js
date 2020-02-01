@@ -10,6 +10,7 @@ import reducer from './reducers';
 //                 messages: []
 //             }
 //         }
+//         currentGroupId
 //     }
 //     user: {
 //         username,

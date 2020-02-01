@@ -6,93 +6,43 @@ import style from './style.module.css';
 import AppLayout from '../common/components/appLayout';
 import AppHeader from '../common/components/appHeader';
 
-const Sidebar = () => (
-    <div className={style.sidebar}>
-        <div className={style.groupsLabel}>Messages</div>
-        <div className={style.groupsWrap}>
-            <Group groupName='Group'/>
-            <Group groupName='Group 2'/>
-            <Group groupName='Group 3'/>
-        </div>
-    </div>
-);
+import Chat from './components/chat';
+import ChatBox from './components/chatBox';
+import Sidebar from './components/sidebar';
 
-const Group = ({ groupName, notification }) => (
-    <div className={style.group}>
-        <span className={style.groupName}>
-            {groupName}
-        </span>
-        <div className={style.notification}></div>
-    </div>
-);
-
-const Main = () => (
-    <div className={style.main}>
-        <AppHeader/>
-        <Chat/>
-        <Input/>
-    </div>
-);
-
-const Chat = () => (
-    <div className={style.chat}>
-        <div className={style.chatInner}>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-            <Message content={'Wow'} self={true}/>
-            <LogMessage content={'User entered the chat'}/>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-            <Message content={'Wow'} self={true}/>
-            <LogMessage content={'User entered the chat'}/>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-            <Message content={'Wow'} self={true}/>
-            <LogMessage content={'User entered the chat'}/>
-            <Sender sender={'Sender'}/>
-            <Message content={'Wow'} self={false}/>
-        </div>
-    </div>
-);
-
-const Sender = ({ sender }) => (
-    <div className={style.messageSender}>
-        {sender}
-    </div>
-);
-
-const Message = ({ content, self }) => {
-    const messageClass = (self) ? style.self : style.other;
-
-    return (
-        <div className={style.message + ' ' + messageClass}>
-            <span><p>{content}</p></span>
-        </div>
-    );
-};
-
-const LogMessage = ({ content }) => (
-    <div className={style.logMessage}>{content}</div>
-);
-
-const Input = () => (
-    <div className={style.input}>
-    </div>
-);
-
-class App extends React.Component {
+class ChatApp extends React.Component {
 
     render() {
+
+        const { chat, username } = this.props;
+
+        let sidebarGroups = [];
+        let currentConversation;
+
+        chat['groups'].forEach(group => {
+            if(group['current']) { // property needs to be set
+                currentConversation = group;
+            }
+            groups.push({
+                'groupName': group['group_name'],
+                'read': group['read'],
+            });
+        });
+
         return (
             <AppLayout>
-                <Sidebar/>
-                <Main/>
+                <Sidebar groups={sidebarGroups}/>
+                <div className={style.main}>
+                    <AppHeader conversationName={currentConversation['group_name'] username={username}}/>
+                    <Chat conversation={currentConversation} username={username}/>
+                    <ChatBox send={this.send.bind(this)}/>
+                </div>
             </AppLayout>
         );
+    }
+
+    send() {
+
     }
 
     componentDidMount() {
@@ -101,5 +51,5 @@ class App extends React.Component {
 };
 
 export default connect(
-    ({ chat }) => { chat }
-)(App);
+    ({ chat, username }) => { chat, username }
+)(ChatApp);

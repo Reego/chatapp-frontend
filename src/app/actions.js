@@ -17,6 +17,8 @@ function receiveChatEvent(payload) {
     }
 }
 
+function sendChatMessage(message) {
+}
 
 export {
     receiveUserEvent,
