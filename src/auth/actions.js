@@ -12,7 +12,7 @@ function loginReceived(username) {
 
 function logoutReceived() {
     return {
-        type: LOGOUT_RECEIVED
+        type: LOGOUT_RECEIVED,
     };
 }
 

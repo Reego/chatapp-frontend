@@ -1,16 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import {
+    disconnectWebSocket,
+} from './actions';
+
 import style from './style.module.css';
 
 import AppLayout from '../common/components/appLayout';
 import AppHeader from '../common/components/appHeader';
 
+import AuthLayer from '../auth/authLayer';
+
 import Chat from './components/chat';
 import ChatBox from './components/chatBox';
 import Sidebar from './components/sidebar';
 
-class ChatApp extends React.Component {
+const WS_PATH = '';
+
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.dispatch = this.props.dispatch;
+    }
 
     render() {
 
@@ -23,15 +36,18 @@ class ChatApp extends React.Component {
             if(group['current']) { // property needs to be set
                 currentConversation = group;
             }
-            groups.push({
-                'groupName': group['group_name'],
+            sidebarGroups.push({
+                'groupName': group['groupName'],
+                'groupId': group['groupId'],
                 'read': group['read'],
             });
         });
 
         return (
             <AppLayout>
-                <Sidebar groups={sidebarGroups}/>
+                <Sidebar sidebarEvent={
+                    () => this.send.bind(this)(this.webSocketMessage('USER', 'CREATE'))
+                } groups={sidebarGroups}/>
                 <div className={style.main}>
                     <AppHeader conversationName={currentConversation['group_name'] username={username}}/>
                     <Chat conversation={currentConversation} username={username}/>
@@ -41,15 +57,90 @@ class ChatApp extends React.Component {
         );
     }
 
-    send() {
+    send(payload) {
+        this.webSocket.send(JSON.stringify(payload));
+    }
 
+    webSocketMessage(type, subType, body={}) {
+        return {
+            'type': type,
+            'body': {
+                'type': subType,
+                ...body
+            }
+        };
+    }
+
+    sendMessage(message, isCommand) {
+
+        if(isCommand) {
+            const args = command.split(' ');
+            if(args.length > 0) {
+                if(args[0] === 'LEAVE') {
+                    case 'LEAVE':
+                        this.send(this.webSocketMessage('USER', 'DELETE',
+                            {
+                                'group_id': this.props.chat.currentGroupId
+                            },
+                        ));
+                    break;
+                }
+                else {
+                    this.send(this.webSocketMessage('CHAT', args[0],
+                        {
+                            'group_id': this.props.chat.currentGroupId,
+                            'message': message,
+                            'username': (args.length >= 2) ? args[1] : '',
+                        }
+                    ));
+                }
+            }
+            return;
+        }
+        this.send(this.webSocketMessage('CHAT', 'MESSAGE',
+            {
+                'group_id': this.props.chat.currentGroupId,
+                'message': message,
+                'username': this.props.username,
+            }
+        ));
+    }
+
+    // called when receiving a message
+    receive(e) {
+        const data = JSON.parse(e.data);
+        this.dispatch(receiveWebSocketEvent(data));
+    }
+
+    close() {
+        console.log('Web Socket Connetion Closed')
+        this.dispatch(disconnectWebSocket);
     }
 
     componentDidMount() {
         // create web socket connection
+
+        this.webSocket = new WebSocket(
+            WS_PATH
+        );
+
+        this.webSocket.onmessage = this.receive.bind(this);
+        this.webSocket.onopen = () => {
+            this.send({'type': 'INIT'});
+        };
+    }
+
+    componentWillUnmount() {
+        this.dispatch(disconnectWebSocket);
     }
 };
 
-export default connect(
-    ({ chat, username }) => { chat, username }
+const ChatAppContainer = connect(
+    ({ chat, username }) => { chat, username },
 )(ChatApp);
+
+export default () => {
+    <AuthLayer>
+        <ChatAppContainer/>
+    </AuthLayer>
+};

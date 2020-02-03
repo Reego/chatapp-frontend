@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
-import * as appReducers from '../app/reducers';
+import chatReducer from '../app/reducers';
+import authReducer from '../auth/reducers';
 
 const reducer = combineReducers({
-    ...appReducers
+    'chat': chatReducer,
+    'username': authReducer,
 });
 
 export default reducer;

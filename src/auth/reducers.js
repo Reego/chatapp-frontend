@@ -1,29 +1,27 @@
 import {
     LOGIN_RECEIVED,
-    LOGOUT_RECEIVED
+    LOGOUT_RECEIVED,
 } from '../common/actionTypes';
 
-function receiveLogin(state={}, action) {
-    if(action.type === LOGIN_RECEIVED) {
-        return {
-            ...state,
-            username: action['username'],
-        };
+function receiveLogin(state, action) {
+    return action['username'];
+}
+
+function receiveLogout(state, action) {
+    return '';
+}
+
+function auth(state='', action) {
+    switch(action.type) {
+        case LOGIN_RECEIVED:
+            return receivedLogin(state, action);
+        case LOGOUT_RECEIVED:
+            throw action.type;
+            return receivedLogout(state, action);
+        default:
+            throw action + ' HUH? '+ action.type + ' ' + LOGOUT_RECEIVED + ' ' + (LOGOUT_RECEIVED == action.type);
     }
     return state;
 }
 
-function receiveLogout(state={}, action) {
-    if(action.type === LOGOUT_RECEIVED) {
-        return {
-            ...state,
-            username: '',
-        };
-    }
-    return state;
-}
-
-export {
-    receiveLogin,
-    receiveLogout
-};
+export default auth;

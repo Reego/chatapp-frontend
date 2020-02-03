@@ -1,27 +1,26 @@
 import {
-    receiveUserEvent,
-    receiveChatEvent,
+    disconnectWebSocket,
+    receiveWebSocketEvent,
 } from './actions';
 
 import {
-    RECEIVE_USER_EVENT,
-    RECEIVE_CHAT_EVENT,
+    DISCONNECT_WEB_SOCKET,
+    RECEIVE_WEB_SOCKET_EVENT,
 } from './actionTypes';
 
 const payload = { 'test': true };
 
-it('testing receiveUserEvent', () => {
-    const expectedResult = {
-        type: RECEIVE_USER_EVENT,
-        payload,
-    };
-    expect(receiveUserEvent(payload)).toEqual(expectedResult);
+it('testing disconnectWebSocket', () => {
+    const expected = {
+        type: DISCONNECT_WEB_SOCKET,
+    }
+    expect(disconnectWebSocket()).toEqual(expected);
 });
 
-it('testing receiveChatEvent', () => {
+it('testing receiveUserEvent', () => {
     const expectedResult = {
-        type: RECEIVE_CHAT_EVENT,
+        type: RECEIVE_WEB_SOCKET_EVENT,
         payload,
     };
-    expect(receiveChatEvent(payload)).toEqual(expectedResult);
+    expect(receiveWebSocketEvent(payload)).toEqual(expectedResult);
 });

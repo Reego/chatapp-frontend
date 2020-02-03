@@ -11,13 +11,13 @@ const Group = ({ groupName, notification }) => (
     </div>
 );
 
-const Sidebar = ({ groups }) => {
+const Sidebar = ({ groups, sidebarEvent }) => {
 
     const groupTags = [];
 
     for(let i = 0; i < groups.length; i++) {
         groupTags.push(
-            <Group groupName={groups[i]} key={i}/>
+            <Group groupName={groups[i]['groupName']} key={i}/>
         );
     }
 
@@ -27,7 +27,7 @@ const Sidebar = ({ groups }) => {
             <div className={style.groupsWrap}>
                 { groupTags }
             </div>
-            <div className={style.groupCreate}>New Group</div>
+            <div className={style.groupCreate} OnClick={sidebarEvent}>New Group</div>
         </div>
     );
 };

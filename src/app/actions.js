@@ -1,26 +1,40 @@
 import {
-    RECEIVE_USER_EVENT,
-    RECEIVE_CHAT_EVENT,
+    DISCONNECT_WEB_SOCKET,
+    // RECEIVE_USER_EVENT,
+    // RECEIVE_CHAT_EVENT,
+    RECEIVE_WEB_SOCKET_EVENT,
 } from './actionTypes';
 
-function receiveUserEvent(payload) {
+function disconnectWebSocket() {
     return {
-        type: RECEIVE_USER_EVENT,
-        payload
-    }
+        type: DISCONNECT_WEB_SOCKET,
+    };
 }
 
-function receiveChatEvent(payload) {
+function receiveWebSocketEvent(payload) {
     return {
-        type: RECEIVE_CHAT_EVENT,
+        type: RECEIVE_WEB_SOCKET_EVENT,
         payload
-    }
+    };
 }
 
-function sendChatMessage(message) {
-}
+// function receiveUserEvent(payload) {
+//     return {
+//         type: RECEIVE_USER_EVENT,
+//         payload
+//     }
+// }
+
+// function receiveChatEvent(payload) {
+//     return {
+//         type: RECEIVE_CHAT_EVENT,
+//         payload
+//     }
+// }
 
 export {
-    receiveUserEvent,
-    receiveChatEvent,
-}
+    // receiveUserEvent,
+    // receiveChatEvent,
+    disconnectWebSocket,
+    receiveWebSocketEvent,
+};
