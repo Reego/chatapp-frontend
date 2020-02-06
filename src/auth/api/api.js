@@ -1,8 +1,8 @@
-import getCookie from '../common/api/cookie';
-import getCsrf from '../common/api/csrf';
+import getCookie from '../../common/api/cookie';
+import getCsrf from '../../common/api/csrf';
 
-import { receiveCsrfToken } from '../common/actions';
-import { loginReceived, logoutReceived } from './actions';
+import { receiveCsrfToken } from '../../common/actions';
+import { loginReceived, logoutReceived } from '../actions';
 
 const API_URL = 'http://127.0.0.1:8000/api';
 

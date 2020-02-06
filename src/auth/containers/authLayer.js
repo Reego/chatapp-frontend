@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { tryPingLogin } from '../common/api/auth';
+import { tryPingLogin } from './auth';
 
 import {
     logoutReceived,
