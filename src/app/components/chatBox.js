@@ -1,6 +1,6 @@
 import React from 'react';
 
-import style from './style.module.css';
+import style from '../style.module.css';
 
 class ChatBox extends React.Component {
 
@@ -14,7 +14,7 @@ class ChatBox extends React.Component {
     render() {
         return (
             <div className={style.input}>
-                <input onKeyPress={this.inputKeyPress.bind(this)} ref={this.inputRef} placeholder='Message...'/>
+                <input className={style.inputBox} onKeyPress={this.inputKeyPress.bind(this)} ref={this.inputRef} placeholder='Message...'/>
             </div>
         );
     }

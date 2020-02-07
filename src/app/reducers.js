@@ -1,6 +1,7 @@
 import {
     DISCONNECT_WEB_SOCKET,
     RECEIVE_WEB_SOCKET_EVENT,
+    RECEIVE_CHANGE_CURRENT_GROUP,
 } from './actionTypes';
 
 // before any of this, Websocket received JSON object with structure:
@@ -140,6 +141,10 @@ function reducer(state={}, action) {
         case RECEIVE_WEB_SOCKET_EVENT:
             if(!action['payload']) break;
             state = receiveWebSocketEvent(state, action);
+            break;
+        case RECEIVE_CHANGE_CURRENT_GROUP:
+            state['currentGroupId'] = action.groupId;
+            break;
     }
     return state;
 }

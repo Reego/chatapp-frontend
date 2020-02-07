@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { tryFormSignup } from '../common/api/auth';
+import { tryFormSignup } from '../api/auth';
 
 import {
     loginReceived,
-} from '../common/actions';
+} from '../actions';
 
 import AuthForm from './authForm';
 
@@ -52,10 +52,10 @@ class Signup extends React.Component {
 }
 
 export default connect(
-    ({ username }) => {
+    ({ username }) => ({
         username
-    },
-    dispatch => {
+    }),
+    dispatch => ({
         loginReceived: (username) => dispatch(username),
-    }
+    })
 )(Signup);

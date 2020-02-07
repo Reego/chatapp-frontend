@@ -2,22 +2,21 @@ import React from 'react';
 
 import style from '../style.module.css';
 
-const Group = ({ groupName, notification }) => (
-    <div className={style.group}>
+const Group = ({ groupName, groupId, notification, groupChangeEvent }) => (
+    <div onClick={()=>groupChangeEvent(groupId)} className={style.group + ((notification) ? (' ' + style.notificationActive) : '')}>
         <span className={style.groupName}>
             {groupName}
         </span>
-        <div className={style.notification}></div>
     </div>
 );
 
-const Sidebar = ({ groups, sidebarEvent }) => {
+const Sidebar = ({ groups, sidebarEvent, groupChangeEvent }) => {
 
     const groupTags = [];
 
     for(let i = 0; i < groups.length; i++) {
         groupTags.push(
-            <Group groupName={groups[i]['groupName']} key={i}/>
+            <Group groupId={groups[i]['groupId']} notification={groups[i]['read']} groupName={groups[i]['groupName']} key={i}/>
         );
     }
 
@@ -25,9 +24,10 @@ const Sidebar = ({ groups, sidebarEvent }) => {
         <div className={style.sidebar}>
             <div className={style.groupsLabel}>Messages</div>
             <div className={style.groupsWrap}>
+                <Group groupId='1' groupChangeEvent={groupChangeEvent} groupName={'WOW'} notification={false}/>
                 { groupTags }
             </div>
-            <div className={style.groupCreate} OnClick={sidebarEvent}>New Group</div>
+            <div className={style.groupCreate} onClick={sidebarEvent}>New Group</div>
         </div>
     );
 };

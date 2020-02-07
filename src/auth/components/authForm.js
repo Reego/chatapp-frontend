@@ -1,6 +1,6 @@
 import React from 'react';
 
-import style from './style.module.css';
+import style from '../style.module.css';
 
 class AuthForm extends React.Component {
 

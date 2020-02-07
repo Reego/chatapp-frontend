@@ -9,7 +9,6 @@ import {
     loginReceived,
 } from '../actions';
 
-import AuthLayout from '../containers/authLayout';
 import AuthForm from '../components/authForm';
 
 class Login extends React.Component {
@@ -54,11 +53,11 @@ class Login extends React.Component {
 }
 
 export default connect(
-    ({ username }) => {
+    ({ username }) => ({
         username
-    },
-    dispatch => {
+    }),
+    dispatch => ({
         logoutReceived: () => dispatch(logoutReceived),
         loginReceived: (username) => dispatch(username),
-    }
+    })
 )(Login);

@@ -3,6 +3,7 @@ import {
     // RECEIVE_USER_EVENT,
     // RECEIVE_CHAT_EVENT,
     RECEIVE_WEB_SOCKET_EVENT,
+    RECEIVE_CHANGE_CURRENT_GROUP,
 } from './actionTypes';
 
 function disconnectWebSocket() {
@@ -15,6 +16,13 @@ function receiveWebSocketEvent(payload) {
     return {
         type: RECEIVE_WEB_SOCKET_EVENT,
         payload
+    };
+}
+
+function receiveChangeCurrentGroup(groupId) {
+    return {
+        type: RECEIVE_CHANGE_CURRENT_GROUP,
+        groupId
     };
 }
 
@@ -37,4 +45,5 @@ export {
     // receiveChatEvent,
     disconnectWebSocket,
     receiveWebSocketEvent,
+    receiveChangeCurrentGroup,
 };

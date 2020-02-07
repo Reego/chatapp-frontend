@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom';
 
 import App from '../app/index';
-import Login from '../auth/login';
-import Logout from '../auth/logout';
-import Signup from '../auth/signup';
+import Login from '../auth/components/login';
+import Logout from '../auth/components/logout';
+import Signup from '../auth/components/signup';
 
 export default () => (
     <Router>

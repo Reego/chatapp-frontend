@@ -2,9 +2,9 @@ import React from 'react';
 
 import style from './appHeader.module.css';
 
-export default () => (
+export default ({groupName, username}) => (
     <div className={style.header}>
-        <span>Alternate</span>
-        <span>Username</span>
+        <span>{groupName}</span>
+        <span>{username}</span>
     </div>
 )

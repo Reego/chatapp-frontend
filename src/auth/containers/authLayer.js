@@ -2,12 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { tryPingLogin } from './auth';
+import { tryPingLogin } from '../api/auth';
 
 import {
     logoutReceived,
     loginReceived
-} from '../common/actions';
+} from '../actions';
 
 class AuthLayer extends React.Component {
 
@@ -46,11 +46,13 @@ class AuthLayer extends React.Component {
 }
 
 export default connect(
-    ({ username }}) => {
+    ({ username }) => ({
         username
-    },
+    }),
     dispatch => {
-        logoutReceived: () => dispatch(logoutReceived()),
-        loginReceived: (username) => dispatch(loginReceived(username)),
+        return {
+            logoutReceived: () => dispatch(logoutReceived()),
+            loginReceived: (username) => dispatch(loginReceived(username)),
+        };
     }
 )(AuthLayer);

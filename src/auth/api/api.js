@@ -159,6 +159,8 @@ function tryFormSignup() {
 }
 
 export {
-    tryLogin,
+    tryFormLogin,
+    tryPingLogin,
+    tryFormSignup,
     logout
 }

@@ -39,6 +39,32 @@
     color:#bbb;
 }
 
+.groupName {
+    display:inline-block;
+    width:199px;
+    height:100%;
+}
+
+.notificationActive {
+    border-bottom:5px solid #902;
+}
+
+.groupCreate {
+    position:absolute;
+    display:block;
+    width:250px;
+    height:80px;
+    background-color:#237;
+    color:#ccc;
+    font-family:sans-serif;
+    bottom:0;
+    z-index:10;
+    line-height:80px;
+    text-align:center;
+    text-indent:0;
+    cursor:pointer;
+}
+
 .main {
     display:flex;
     flex-direction:column;
@@ -73,7 +99,6 @@
 
 .message span {
     display:inline-block;
-    background-color:#09f;
     max-width:60%;
     width:auto;
     padding:10px 10px;
@@ -95,10 +120,12 @@
 
 .message.other span {
     border-radius:2px;
+    background-color:#aaa;
 }
 
 .message.self span {
     border-radius:2px;
+    background-color:#09f;
 }
 
 .messageSender {
@@ -121,4 +148,17 @@
     display:block;
     height:200px;
     background-color:#222;
+}
+
+.inputBox {
+    display:block;
+    background-color:#ccc;
+    outline-color:#ccc;
+    border-color:#ccc;
+    height:60px;
+    width:90%;
+    margin:0 auto;
+    margin-top:50px;
+    font-size:15px;
+    text-indent:5px;
 }
