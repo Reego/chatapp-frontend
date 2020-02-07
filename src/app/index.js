@@ -18,7 +18,7 @@ import Chat from './components/chat';
 import ChatBox from './components/chatBox';
 import Sidebar from './components/sidebar';
 
-const WS_PATH = '';
+const WS_PATH = 'ws://localhost:8000/ws/chat/';
 
 class App extends React.Component {
 

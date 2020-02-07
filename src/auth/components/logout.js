@@ -24,7 +24,9 @@ export default class LogoutEndpoint extends React.Component {
     }
 
     componentDidMount() {
-        // send AJAX logout and redirect to / path
+        
+	logout();
+	// send AJAX logout and redirect to / path
         this.setState({
             redirect: true
         });

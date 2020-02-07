@@ -4,7 +4,7 @@ import getCsrf from '../../common/api/csrf';
 import { receiveCsrfToken } from '../../common/actions';
 import { loginReceived, logoutReceived } from '../actions';
 
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'http://127.0.0.1:8000/auth';
 
 // credit to https://muffinman.io/simple-javascript-api-wrapper/
 
@@ -117,9 +117,9 @@ export {
 
 // const loginUrl = window.BASE_URL;
 
-const LOGIN_PATH = '/auth/login';
-const LOGOUT_PATH = '/auth/logout';
-const SIGNUP_PATH = '/auth/signup';
+const LOGIN_PATH = 'login/';
+const LOGOUT_PATH = 'logout/';
+const SIGNUP_PATH = 'signup/';
 
 function tryFormLogin(credentials) {
     if(credentials.username && credentials.password) {
