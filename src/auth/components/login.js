@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { tryFormLogin } from '../api/auth';
+import getCsrf from '../../common/api/csrf';
+
+import { tryFormLogin } from '../api/api';
 
 import {
     logoutReceived,
@@ -41,14 +43,31 @@ class Login extends React.Component {
     submitForm(e) {
         e.preventDefault();
 
+        const elements = e.target.elements;
 
-        tryFormLogin()
-            .then(parsedResponse => {
-                this.props.loginReceived(parsedResponse['username']);
+        const username = elements['Username'].value;//elements['username'];
+        const password = elements['Password'].value;//elements['password'];
+
+        getCsrf().then(() =>
+            tryFormLogin({
+                username,
+                password
             })
-            .error(error => {
-                this.props.logoutReceived();
-            });
+                .then(parsedResponse => {
+                    const username = parsedResponse['username'];
+                    if(username) {
+                        this.props.loginReceived(parsedResponse['username']);
+                    }
+                    else {
+                        throw 'Authenticated Failed';
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    console.log('Failed to signup');
+                    //this.props.logoutReceived();
+                })
+            );
     }
 }
 

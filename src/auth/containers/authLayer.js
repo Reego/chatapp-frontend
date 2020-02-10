@@ -35,7 +35,13 @@ class AuthLayer extends React.Component {
         if(!this.props.username) {
             this.tryPingLogin()
                 .then(parsedResponse => {
-                    this.props.loginReceived(parsedResponse['username']);
+                    const username = parsedResponse['username'];
+                    if(username) {
+                        this.props.loginReceived(parsedResponse['username']);
+                    }
+                    else {
+                        throw 'Failed PING Authenticated';
+                    }
                 })
                 .catch(error => {
                     this.props.logoutReceived();

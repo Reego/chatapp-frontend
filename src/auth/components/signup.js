@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { tryFormSignup } from '../api/auth';
+import { tryFormSignup } from '../api/api';
+import getCsrf from '../../common/api/csrf';
 
 import {
     loginReceived,
@@ -32,7 +33,7 @@ class Signup extends React.Component {
         return (
         <React.Fragment>
             <h1>Signup</h1>
-            <AuthForm apiEndpoint='register' submitLabel='Signup' fields={fields}/>
+            <AuthForm submitAuthForm={this.submitForm.bind(this)} apiEndpoint='register' submitLabel='Signup' fields={fields}/>
         </React.Fragment>
         );
     }
@@ -40,14 +41,24 @@ class Signup extends React.Component {
     submitForm(e) {
         e.preventDefault();
 
+        const elements = e.target.elements;
 
-        tryFormSignup()
-            .then(parsedResponse => {
-                this.props.loginReceived(parsedResponse['username']);
+        const username = elements['Username'].value;//elements['username'];
+        const password = elements['Password'].value;//elements['password'];
+
+        getCsrf().then(() =>
+            tryFormSignup({
+                username,
+                password
             })
-            .error(error => {
-                console.log('Failed to signup');
-            });
+                .then(parsedResponse => {
+                    this.props.loginReceived(parsedResponse['username']);
+                })
+                .catch(error => {
+                    console.log(error);
+                    console.log('Failed to signup');
+                })
+            );
     }
 }
 

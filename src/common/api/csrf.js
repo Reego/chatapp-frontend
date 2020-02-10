@@ -9,8 +9,9 @@ const getCsrf = async function() {
         _csrfToken = getCookie('csrftoken');
 
         if(!_csrfToken) {
-            await fetch('http://localhost:8000/csrf/', { credentials:'include' });
+            await fetch('http://127.0.0.1:8000/csrf/', { credentials:'include' });
             _csrfToken = getCookie('csrftoken');
+            alert(_csrfToken);
         }
     }
     else {
@@ -18,6 +19,10 @@ const getCsrf = async function() {
     }
 
     return _csrfToken;
+}
+
+const alternate = async function() {
+    return new Promise();
 }
 
 export default getCsrf;

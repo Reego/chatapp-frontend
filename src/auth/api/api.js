@@ -9,12 +9,23 @@ const API_URL = 'http://127.0.0.1:8000/auth';
 // credit to https://muffinman.io/simple-javascript-api-wrapper/
 
 const fetchResource = function (path, userOptions = {}) {
+
+    alert('FETCH');
     // Define default options
     const defaultOptions = {};
+
+    const csrf = getCookie('csrftoken')
     // Define default headers
     const defaultHeaders = {
-        'X-CSRFTOKEN': getCookie('csrftoken'),
+        'X-CSRFTOKEN': csrf,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
     };
+
+    userOptions['body'] = {
+        ...userOptions['body'],
+        'csrfmiddlewaretoken': csrf,
+    }
 
     const options = {
         // Merge options
@@ -26,6 +37,8 @@ const fetchResource = function (path, userOptions = {}) {
           ...userOptions.headers,
         },
     };
+
+    console.log(options);
 
     // Build Url
     const url = `${ API_URL }/${ path }`;
@@ -85,7 +98,7 @@ const fetchResource = function (path, userOptions = {}) {
         // });
 };
 
-function safeApiCall(errAction = null) {
+function safeApiAction(errAction = null) {
     // gets csrf
     // if valid csrf, do call,
     // else return error
@@ -108,12 +121,12 @@ function safeApiCall(errAction = null) {
     }
 }
 
-const login = safeApiCall()()
+const login = safeApiAction()();
 
 export {
     fetchResource,
-    safeApiCall
-}
+    safeApiAction,
+};
 
 // const loginUrl = window.BASE_URL;
 
@@ -133,7 +146,7 @@ function tryFormLogin(credentials) {
         });
     }
     else {
-        throw new Exception("Credentials not provided");
+        throw "Credentials not provided";
     }
 }
 
@@ -151,8 +164,9 @@ function logout() {
     });
 }
 
-function tryFormSignup() {
+function tryFormSignup(body) {
     return fetchResource(SIGNUP_PATH, {
+        body: body,
         credentials: 'include',
         method: 'POST',
     });
@@ -162,5 +176,5 @@ export {
     tryFormLogin,
     tryPingLogin,
     tryFormSignup,
-    logout
-}
+    logout,
+};

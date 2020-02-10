@@ -17,7 +17,6 @@ class AuthForm extends React.Component {
             );
         }
         if(this.props.submitAuthForm !== undefined) {
-
         }
         const onSubmitForm = (this.props.submitAuthForm !== undefined)
             ? (e) => this.props.submitAuthForm(e, this.props.apiEndpoint)
