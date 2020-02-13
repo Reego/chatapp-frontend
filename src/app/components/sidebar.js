@@ -16,7 +16,7 @@ const Sidebar = ({ groups, sidebarEvent, groupChangeEvent }) => {
 
     for(let i = 0; i < groups.length; i++) {
         groupTags.push(
-            <Group groupId={groups[i]['groupId']} notification={groups[i]['read']} groupName={groups[i]['groupName']} key={i}/>
+            <Group groupChangeEvent={groupChangeEvent} groupId={groups[i]['groupId']} notification={groups[i]['read']} groupName={groups[i]['groupName']} key={i}/>
         );
     }
 
@@ -24,7 +24,6 @@ const Sidebar = ({ groups, sidebarEvent, groupChangeEvent }) => {
         <div className={style.sidebar}>
             <div className={style.groupsLabel}>Messages</div>
             <div className={style.groupsWrap}>
-                <Group groupId='1' groupChangeEvent={groupChangeEvent} groupName={'WOW'} notification={false}/>
                 { groupTags }
             </div>
             <div className={style.groupCreate} onClick={sidebarEvent}>New Group</div>

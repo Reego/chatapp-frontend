@@ -2,6 +2,7 @@ import {
     DISCONNECT_WEB_SOCKET,
     RECEIVE_WEB_SOCKET_EVENT,
     RECEIVE_CHANGE_CURRENT_GROUP,
+    RECEIVE_READ_MESSAGE,
 } from './actionTypes';
 
 // before any of this, Websocket received JSON object with structure:
@@ -22,7 +23,7 @@ function receiveWebSocketEvent(chat={}, action) {
     }
 
     const payload = action.payload;
-    switch(payload['command']) {
+    switch(payload['command_type']) {
         case MESSAGE_COMMAND:
             chat = chatEvent(chat, payload);
             break;
@@ -36,11 +37,13 @@ function receiveWebSocketEvent(chat={}, action) {
 
 function userEvent(chat, payload) {
 
-    let groups = chat['groups'];
+    let groups = {
+        ...chat['groups']
+    };
     const groupId = payload['group_id'];
     const arg = payload['message'];
 
-    switch(payload['command']) {
+    switch(payload['command_type']) {
         case CREATE_GROUP_COMMAND: // the logged-in user has made a group
             if (!(groupId in groups)) {
                 groups[groupId] = {
@@ -48,7 +51,11 @@ function userEvent(chat, payload) {
                     'groupName': payload['message'],
                     'messages': [],
                 };
-                chat['currentGroupId'] = groupId;
+                return {
+                    ...chat,
+                    'currentGroupId': groupId,
+                    'groups': groups
+                };
             }
             break;
         case DELETE_GROUP_COMMAND: // the logged-in user has left the group
@@ -59,29 +66,37 @@ function userEvent(chat, payload) {
                 for(var firstKey in chat['groups']) {
                     break;
                 }
+                const newState = {
+                    ...chat,
+                    'groups':groups,
+                };
                 if(firstKey) {
-                    chat['currentGroupId'] = firstKey;
+                    newState['currentGroupId'] = firstKey;
                 }
-                else {
-                    delete chat['currentGroupId'];
-                }
+                return newState
             }
             break;
         case CHANGE_NAME_GROUP_COMMAND:
             if(groupId in groups) {
                 groups[groupId]['groupName'] = arg;
+                return {
+                    ...chat,
+                    'groups':groups
+                };
             }
             break;
         case INIT_GROUPS_COMMAND:
-            chat['groups'] = {};
-            groups = chat['groups'];
+            groups = {};
             const tempGroups = payload['groups'];
+            const newState = {
+                ...chat
+            };
             if(tempGroups !== {}) {
                 let first = true;
                 for(let groupId in tempGroups) {
                     const group = tempGroups[groupId];
                     if (first) {
-                        chat['currentGroupId'] = group['group_id'];
+                        newState['currentGroupId'] = group['group_id'];
                         first = false;
                     }
                     groups[group['group_id']] = {
@@ -91,28 +106,32 @@ function userEvent(chat, payload) {
                         'read': group['read'],
                     };
                 }
+                newState['groups'] = groups
             }
             else {
-                delete chat['currentGroupId'];
+                if('currentGroupId' in newState) {
+                    delete newState['currentGroupId'];
+                }
             }
+            return newState;
             break;
-        default: // unrecognized command, no change to state
-            return null;
     }
-
     return chat;
-
 }
 
 // processes events that occur within a conversation - messages
 
 function chatEvent(chat, payload) {
 
-    const groups = chat['groups'];
+    const groups = {
+        ...chat['groups']
+    };
 
     const groupId = payload['group_id'];
     const message = payload['message'];
     const username = payload['username'];
+
+    console.log(payload);
 
     if(groupId in groups) {
         const group = groups[groupId];
@@ -127,7 +146,10 @@ function chatEvent(chat, payload) {
         }
     }
 
-    return chat;
+    return {
+        ...chat,
+        'groups': groups,
+    };
 
     // else don't do anything
 }
@@ -136,15 +158,29 @@ function reducer(state={}, action) {
 
     switch(action.type) {
         case DISCONNECT_WEB_SOCKET:
-            state = {}
+            return {}
             break;
         case RECEIVE_WEB_SOCKET_EVENT:
             if(!action['payload']) break;
-            state = receiveWebSocketEvent(state, action);
+            return receiveWebSocketEvent(state, action);
             break;
         case RECEIVE_CHANGE_CURRENT_GROUP:
-            state['currentGroupId'] = action.groupId;
+            return {
+                ...state,
+                'currentGroupId': action.groupId
+            };
             break;
+        case RECEIVE_READ_MESSAGE:
+            const newState = {...state};
+            if(action.groupId in state['groups']) {
+                const groups = {...state['groups']};
+                groups[action.groupId].read = false;
+                return {
+                    ...state,
+                    groups,
+                };
+            }
+            return newState;
     }
     return state;
 }

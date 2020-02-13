@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { tryPingLogin } from '../api/auth';
+import { tryPingLogin } from '../api/api';
 
 import {
     logoutReceived,
@@ -29,11 +29,14 @@ class AuthLayer extends React.Component {
         else if(this.state.redirect) {
             return <Redirect to='/login'/>
         }
+        else {
+            return null;
+        }
     }
 
     componentDidMount() {
         if(!this.props.username) {
-            this.tryPingLogin()
+            tryPingLogin()
                 .then(parsedResponse => {
                     const username = parsedResponse['username'];
                     if(username) {

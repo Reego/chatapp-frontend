@@ -64,10 +64,14 @@ class Login extends React.Component {
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log('Failed to signup');
+                    console.log('Failed to login');
                     //this.props.logoutReceived();
                 })
-            );
+            )
+            .catch(error => {
+                console.log(error);
+                console.log('Failed to login');
+            });
     }
 }
 
@@ -76,7 +80,7 @@ export default connect(
         username
     }),
     dispatch => ({
-        logoutReceived: () => dispatch(logoutReceived),
-        loginReceived: (username) => dispatch(username),
+        logoutReceived: () => dispatch(logoutReceived()),
+        loginReceived: (username) => dispatch(loginReceived(username)),
     })
 )(Login);

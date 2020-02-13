@@ -7,7 +7,7 @@ class AuthForm extends React.Component {
     render() {
         let inputs = [];
         for(let i = 0; i < this.props.fields.length; i++) {
-            const fieldType = this.props.fields[i].type || 'text';
+            const fieldType = this.props.fields[i].fieldType || 'text';
             inputs.push(
                 <div key={i}>
                     <label>{this.props.fields[i].name}</label>

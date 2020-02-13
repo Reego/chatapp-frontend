@@ -2,6 +2,7 @@ import {
     DISCONNECT_WEB_SOCKET,
     // RECEIVE_USER_EVENT,
     // RECEIVE_CHAT_EVENT,
+    RECEIVE_READ_MESSAGE,
     RECEIVE_WEB_SOCKET_EVENT,
     RECEIVE_CHANGE_CURRENT_GROUP,
 } from './actionTypes';
@@ -26,6 +27,13 @@ function receiveChangeCurrentGroup(groupId) {
     };
 }
 
+function receiveReadMessage(groupId) {
+    return {
+        type: RECEIVE_READ_MESSAGE,
+        groupId
+    };
+}
+
 // function receiveUserEvent(payload) {
 //     return {
 //         type: RECEIVE_USER_EVENT,
@@ -46,4 +54,5 @@ export {
     disconnectWebSocket,
     receiveWebSocketEvent,
     receiveChangeCurrentGroup,
+    receiveReadMessage,
 };

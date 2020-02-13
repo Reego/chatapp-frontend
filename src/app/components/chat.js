@@ -9,28 +9,31 @@ class Chat extends React.Component {
 
         const chatItems = [];
 
-        let lastSender = '';
+        if(conversation && 'messages' in conversation) {
 
-        for(let i = 0; i < conversation['messages'].length; i++) {
-            const message = conversation['messages'][i];
-            const messageContent = message['content'];
-            const sender = message['username'];
+            let lastSender = '';
 
-            if(sender) {
-                if(lastSender !== sender && sender !== username) {
+            for(let i = 0; i < conversation['messages'].length; i++) {
+                const message = conversation['messages'][i];
+                const messageContent = message['message'];
+                const sender = message['username'];
+
+                if(sender) {
+                    if(lastSender !== sender && sender !== username) {
+                        chatItems.push(
+                            <Sender sender={sender} key={i*3}/>
+                        );
+                        lastSender = sender;
+                    }
                     chatItems.push(
-                        <Sender sender={sender} key={i*3}/>
+                        <Message content={messageContent} self={sender === username} key={i*3+1}/>
                     );
-                    lastSender = sender;
                 }
-                chatItems.push(
-                    <Message content={messageContent} self={sender === username} key={i*3+1}/>
-                );
-            }
-            else {
-                chatItems.push(
-                    <LogMessage content={messageContent} key={i*3+2}/>
-                );
+                else {
+                    chatItems.push(
+                        <LogMessage content={messageContent} key={i*3+2}/>
+                    );
+                }
             }
         }
 

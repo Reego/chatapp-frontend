@@ -27,7 +27,7 @@ class Signup extends React.Component {
             {
                 name: 'Password',
                 placeholder: 'Password',
-                type: 'password',
+                fieldType: 'password',
             }
         ];
         return (
@@ -52,7 +52,7 @@ class Signup extends React.Component {
                 password
             })
                 .then(parsedResponse => {
-                    this.props.loginReceived(parsedResponse['username']);
+                    this.props.loginReceived(loginReceived(parsedResponse['username']));
                 })
                 .catch(error => {
                     console.log(error);

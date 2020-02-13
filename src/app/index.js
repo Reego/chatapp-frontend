@@ -5,6 +5,7 @@ import {
     receiveWebSocketEvent,
     disconnectWebSocket,
     receiveChangeCurrentGroup,
+    receiveReadMessage,
 } from './actions';
 
 import style from './style.module.css';
@@ -18,7 +19,7 @@ import Chat from './components/chat';
 import ChatBox from './components/chatBox';
 import Sidebar from './components/sidebar';
 
-const WS_PATH = 'ws://localhost:8000/ws/chat/';
+const WS_PATH = 'ws://127.0.0.1:8000/ws/chat/';
 
 class App extends React.Component {
 
@@ -33,11 +34,11 @@ class App extends React.Component {
 
         let sidebarGroups = [];
         let currentConversation;
-        let emptyChat = sidebarGroups.length === 0;
 
         if(chat['groups'] !== undefined) {
 
-            chat['groups'].forEach(group => {
+            for(let groupId in chat['groups']) {
+                const group = chat['groups'][groupId];
                 if(group['groupId'] === chat['currentGroupId']) { // property needs to be set
                     currentConversation = group;
                 }
@@ -46,9 +47,9 @@ class App extends React.Component {
                     'groupId': group['groupId'],
                     'read': group['read'],
                 });
-            });
+            }
         }
-        else {
+        else if(!username) {
             currentConversation = {
                 'groupName': 'Group Name',
                 'messages': [
@@ -65,6 +66,9 @@ class App extends React.Component {
             };
             username = 'Username';
         }
+        const currentConversationName = (currentConversation) ? currentConversation['groupName'] : '';
+
+        const emptyChat = sidebarGroups.length > 0;
 
         return (
             <AppLayout>
@@ -72,11 +76,11 @@ class App extends React.Component {
                     () => this.send.bind(this)(this.webSocketMessage('USER', 'CREATE'))
                 } groups={sidebarGroups}/>
                 <div className={style.main}>
-                    <AppHeader groupName={currentConversation['groupName']} username={username}/>
+                    <AppHeader groupName={currentConversationName} username={username}/>
                     <Chat conversation={currentConversation} username={username}/>
-                    { emptyChat }
-                        <ChatBox send={this.send.bind(this)}/>
-                    {}
+                    { emptyChat &&
+                        <ChatBox send={this.sendMessage.bind(this)}/>
+                    }
                 </div>
             </AppLayout>
         );
@@ -88,6 +92,8 @@ class App extends React.Component {
 
     groupChange(groupId) {
         this.dispatch(receiveChangeCurrentGroup(groupId));
+        this.send(this.webSocketMessage('USER', 'READ', {'group_id': this.props.chat.currentGroupId}));
+        this.props.dispatch(receiveReadMessage(groupId));
     }
 
     webSocketMessage(type, subType, body={}) {
@@ -95,7 +101,7 @@ class App extends React.Component {
             'type': type,
             'body': {
                 'type': subType,
-                ...body
+                ...body,
             }
         };
     }
@@ -108,16 +114,18 @@ class App extends React.Component {
                 if(args[0] === 'LEAVE') {
                     this.send(this.webSocketMessage('USER', 'DELETE',
                         {
-                            'group_id': this.props.chat.currentGroupId
+                            'group_id': this.props.chat.currentGroupId,
+                            'command': args[0],
                         },
                     ));
                 }
                 else {
-                    this.send(this.webSocketMessage('CHAT', args[0],
+                    this.send(this.webSocketMessage('CHAT', 'COMMAND',
                         {
                             'group_id': this.props.chat.currentGroupId,
                             'message': message,
                             'username': (args.length >= 2) ? args[1] : '',
+                            'command': args[0],
                         }
                     ));
                 }
@@ -147,8 +155,6 @@ class App extends React.Component {
     componentDidMount() {
         // create web socket connection
 
-        return;
-
         this.webSocket = new WebSocket(
             WS_PATH
         );
@@ -171,6 +177,6 @@ const ChatAppContainer = connect(
 )(App);
 
 export default () =>
-    // (<AuthLayer>
+    (<AuthLayer>
         <ChatAppContainer/>
-    // </AuthLayer>);
+    </AuthLayer>);

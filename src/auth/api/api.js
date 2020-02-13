@@ -10,7 +10,7 @@ const API_URL = 'http://127.0.0.1:8000/auth';
 
 const fetchResource = function (path, userOptions = {}) {
 
-    alert('FETCH');
+    // alert('FETCH');
     // Define default options
     const defaultOptions = {};
 
