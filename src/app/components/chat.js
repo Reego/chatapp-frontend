@@ -30,6 +30,7 @@ class Chat extends React.Component {
                     );
                 }
                 else {
+                    lastSender = '';
                     chatItems.push(
                         <LogMessage content={messageContent} key={i*3+2}/>
                     );

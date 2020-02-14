@@ -42,6 +42,7 @@ function userEvent(chat, payload) {
     };
     const groupId = payload['group_id'];
     const arg = payload['message'];
+    let newState;
 
     switch(payload['command_type']) {
         case CREATE_GROUP_COMMAND: // the logged-in user has made a group
@@ -59,6 +60,10 @@ function userEvent(chat, payload) {
             }
             break;
         case DELETE_GROUP_COMMAND: // the logged-in user has left the group
+            newState = {
+                ...chat,
+                'groups':groups,
+            };
             if(groupId in groups) {
                 delete groups[groupId];
             }
@@ -66,15 +71,11 @@ function userEvent(chat, payload) {
                 for(var firstKey in chat['groups']) {
                     break;
                 }
-                const newState = {
-                    ...chat,
-                    'groups':groups,
-                };
                 if(firstKey) {
                     newState['currentGroupId'] = firstKey;
                 }
-                return newState
             }
+            return newState
             break;
         case CHANGE_NAME_GROUP_COMMAND:
             if(groupId in groups) {
@@ -88,7 +89,7 @@ function userEvent(chat, payload) {
         case INIT_GROUPS_COMMAND:
             groups = {};
             const tempGroups = payload['groups'];
-            const newState = {
+            newState = {
                 ...chat
             };
             if(tempGroups !== {}) {
